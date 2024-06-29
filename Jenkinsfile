@@ -3,6 +3,11 @@ pipeline {
     
     stages {
 
+   stage('Clean workspace') {
+            steps {
+                deleteDir()
+            }
+        }
         stage('Git clone repo') {
             steps {
                git 'https://github.com/JituG22/react-cicd-test.git'
