@@ -25,7 +25,7 @@ pipeline {
         }
         stage('Archive artifacts') {
             steps {
-                archiveArtifacts artifacts: '**/build/**', allowEmptyArchive: true
+                archiveArtifacts artifacts: 'build/**', allowEmptyArchive: true
             }
         }
     
