@@ -20,7 +20,7 @@ pipeline {
         }
         stage('Npm Test') {
             steps {
-               bat "npm run test-coverage"
+               bat "npm run test"
             }
         }
     
