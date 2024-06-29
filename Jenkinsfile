@@ -1,23 +1,28 @@
 pipeline {
     agent any
-    tools {
-        nodejs "node"
-    }
+    
     stages {
-        stage('Hello') {
-            steps {
-                echo 'Hello World'
-            }
-        }
+
         stage('Git clone repo') {
             steps {
                git 'https://github.com/JituG22/react-cicd-test.git'
             }
         }
-        stage('Npm install') {
+        stage('npm install') {
             steps {
-               sh "npm install"
+               bat "npm install"
             }
         }
+        stage('Npm Build') {
+            steps {
+               bat "npm run build"
+            }
+        }
+        stage('Npm Test') {
+            steps {
+               bat "npm run test-coverage"
+            }
+        }
+    
     }
 }
