@@ -26,7 +26,7 @@ pipeline {
         stage('Archive artifacts') {
             steps {
             dir('demo') {
-                        sh '''
+                        bat '''
                         zip -r  build.zip build/**
                         '''
                 }
