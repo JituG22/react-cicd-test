@@ -29,6 +29,20 @@ pipeline {
                     bat "powershell Compress-Archive -Path 'build/**' -DestinationPath '${env.WORKSPACE}\\build.zip'"
             }
         }
+         stage('Deploy to Tomcat') {
+            steps {
+                script {
+                    def tomcatUrl = 'http://localhost:9090'  // Update with your Tomcat URL
+                    def tomcatManagerUser = 'admin'          // Update with your Tomcat manager username
+                    def tomcatManagerPassword = 'admin'   // Update with your Tomcat manager password
+                    def artifactName = 'build.zip'           // Update with your artifact name
+
+                    withCredentials([usernamePassword(credentialsId: 'tomcat-credentials', usernameVariable: 'TOMCAT_USER', passwordVariable: 'TOMCAT_PASS')]) {
+                        bat "curl -T ${artifactName} ${TOMCAT_USER}:${TOMCAT_PASS}@${tomcatUrl}/manager/text/deploy?path=/&update=true"
+                    }
+                }
+            }
+        }
     
     }
     
