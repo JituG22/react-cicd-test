@@ -1,6 +1,8 @@
 pipeline {
     agent any
-
+    tools {
+        nodejs "node20"
+    }
     stages {
         stage('Hello') {
             steps {
@@ -12,9 +14,9 @@ pipeline {
                git 'https://github.com/JituG22/react-cicd-test.git'
             }
         }
-         stage('Npm install') {
+        stage('Npm install') {
             steps {
-               sh "npm -v"
+               sh "npm install"
             }
         }
     }
