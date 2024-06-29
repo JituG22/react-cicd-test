@@ -25,7 +25,7 @@ pipeline {
         }
         stage('Archive artifacts') {
             steps {
-             bat 'powershell Compress-Archive -Path "build/**" -DestinationPath "zip/"'
+             bat 'powershell Compress-Archive -Path "build/**" -DestinationPath ""'
             }
         }
     
