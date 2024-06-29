@@ -23,6 +23,12 @@ pipeline {
                bat "npm run test"
             }
         }
+        stage('Archive Artifacts') {
+            steps {
+                archiveArtifacts artifacts: 'build/**/*', allowEmptyArchive: true
+            }
+        }
     
     }
+    
 }
