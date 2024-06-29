@@ -12,5 +12,10 @@ pipeline {
                git 'https://github.com/JituG22/react-cicd-test.git'
             }
         }
+         stage('Npm install') {
+            steps {
+               sh "npm install"
+            }
+        }
     }
 }
