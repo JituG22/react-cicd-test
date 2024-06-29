@@ -25,7 +25,11 @@ pipeline {
         }
         stage('Archive artifacts') {
             steps {
-                archiveArtifacts artifacts: 'build/**', allowEmptyArchive: true
+            dir('demo') {
+                        sh '''
+                        zip -r  build.zip build/**
+                        '''
+                }
             }
         }
     
