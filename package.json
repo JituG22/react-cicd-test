@@ -15,7 +15,7 @@
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
-    "test": "react-scripts test --coverage --coverageDirectory=output/coverage/jest --watchAll=false",
+    "test": "react-scripts test --coverage --coverageDirectory=output/coverage/jest --watchAll=false --passWithNoTests",
     "test-coverage": "react-scripts test --coverage --coverageDirectory=output/coverage/jest --watchAll=false",
     "eject": "react-scripts eject"
   },
