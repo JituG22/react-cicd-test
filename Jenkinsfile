@@ -47,7 +47,7 @@ pipeline {
                     // Unzip and deploy the static files to Tomcat's webapps directory
                     withCredentials([usernamePassword(credentialsId: 'tomcat-credentials', usernameVariable: 'TOMCAT_USER', passwordVariable: 'TOMCAT_PASS')]) {
                         bat """
-                            powershell Expand-Archive -Path '${env.WORKSPACE}\\${artifactName}' -DestinationPath 'C:\Program Files\Apache Software Foundation\Tomcat 8.5\webapps\ROOT' -Force
+                            powershell Expand-Archive -Path '${env.WORKSPACE}\\${artifactName}' -DestinationPath 'C:\\Program Files\\Apache Software Foundation\\Tomcat 8.5\\webapps\\ROOT' -Force
                         """
                     }
                 }
