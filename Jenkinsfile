@@ -28,11 +28,11 @@ pipeline {
                bat "npm run test"
             }
         }
-       stage('Archive artifacts') {
+        stage('Archive artifacts') {
             steps {
-                // Create WAR file
-                bat 'jar -cvf build.war -C build .'
-                archiveArtifacts artifacts: 'build.war', allowEmptyArchive: true
+                // Create ZIP file
+                bat "powershell Compress-Archive -Path 'build/**' -DestinationPath '${env.WORKSPACE}\\build.zip'"
+                archiveArtifacts artifacts: 'build.zip', allowEmptyArchive: true
             }
         }
         
@@ -42,11 +42,13 @@ pipeline {
                     def tomcatUrl = 'http://localhost:9090'  // Update with your Tomcat URL
                     def tomcatManagerUser = 'admin'          // Update with your Tomcat manager username
                     def tomcatManagerPassword = 'admin'   // Update with your Tomcat manager password
-                    def artifactName = 'build.war'           // Update with your artifact name
+                    def artifactName = 'build.zip'           // Update with your artifact name
 
+                    // Unzip and deploy the static files to Tomcat's webapps directory
                     withCredentials([usernamePassword(credentialsId: 'tomcat-credentials', usernameVariable: 'TOMCAT_USER', passwordVariable: 'TOMCAT_PASS')]) {
-                        // Deploy WAR file to Tomcat
-                        bat "curl -u ${TOMCAT_USER}:${TOMCAT_PASS} -T ${env.WORKSPACE}/${artifactName} ${tomcatUrl}/manager/text/deploy?path=/&update=true"
+                        bat """
+                            powershell Expand-Archive -Path '${env.WORKSPACE}\\${artifactName}' -DestinationPath 'C:\\path\\to\\tomcat\\webapps\\ROOT' -Force
+                        """
                     }
                 }
             }
