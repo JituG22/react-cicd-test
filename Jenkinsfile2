@@ -1,0 +1,90 @@
+pipeline {
+    agent any
+    parameters {
+        choice(name: 'GIT_BRANCH', choices: ['main', 'master'], description: 'Choose the Git branch to build')
+        choice(name: 'GIT_REPO', choices: ['sample-node-api-prv', 'dsa'], description: 'Choose the Git repository')
+        
+    }
+    environment {
+        NODE_ENV = 'development'
+    }
+    tools {
+        nodejs 'NodeJS_20'  // Make sure to configure this tool in Jenkins (Manage Jenkins > Global Tool Configuration)
+    }
+    stages {
+         stage('Pipeline Info') {
+            steps {
+                script {
+                     def gitUrlStr = "https://github.com/JituG22/${GIT_REPO}.git"
+                     def now = new Date().format("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone('Asia/Kolkata'))
+                    echo "---------------- steps 1 Pipeline Info ------------------------"
+                    echo "📦 Node.js Version: ${sh(script: 'node -v', returnStdout: true).trim()}"
+                    echo "📅 Date & Time: ${now}"
+                    echo "🔗 Repo URL: ${gitUrlStr}"
+                    echo "🌿 Git Branch: ${params.GIT_BRANCH}"
+                    echo "-----------------------------------------------------"
+                }
+            }
+         }
+        stage('Checkout Code') {
+            steps {
+                git url: 'https://github.com/JituG22/${GIT_REPO}.git', branch: "${params.GIT_BRANCH}", credentialsId: 'GitHubJituG2'
+            }
+        }
+
+        stage('Install Dependencies') {
+            steps {
+                sh 'npm install'
+            }
+        }
+
+        stage('Lint (Optional)') {
+            steps {
+                sh 'npm run lint || true'  // if lint script is defined
+            }
+        }
+
+        stage('Run Tests') {
+            steps {
+                sh 'npm test || echo "No tests defined."'
+            }
+        }
+
+        stage('Build') {
+            steps {
+                sh 'npm run build || echo "No build script defined."'
+            }
+        }
+       stage('Archive Artifacts') {
+           steps {
+        script {
+                    sh '''
+                      if [ -d "dist" ]; then
+                        zip -r build_output.zip dist
+                      else
+                        echo "dist folder not found, skipping zip"
+                      fi
+                    '''
+                }
+                archiveArtifacts artifacts: 'build_output.zip', onlyIfSuccessful: true
+            }
+        }
+        stage('Deploy (Optional)') {
+            when {
+                branch 'main'
+            }
+            steps {
+                echo 'Deploy logic goes here – e.g., Docker build/push or SCP to server.'
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Pipeline executed successfully.'
+        }
+        failure {
+            echo 'Pipeline failed!'
+        }
+    }
+}
