@@ -1,3 +1,27 @@
+
+
+Subject: Important Update on Nexus Repository URL Changes
+
+Hello Team,
+
+I’d like to share an important technical update regarding our Nexus repository portal.
+
+A new information popup on the portal highlights a significant change: multiple Nexus repository URLs (3–4) have now been merged into a single unified URL. This update will impact developers and affect the .npmrc file strategy, as well as our overall CI/CD processes.
+
+For detailed information, please refer to the Confluence page below:
+[Insert Confluence Page URL]
+
+Feel free to reach out if you have any questions or need assistance.
+
+Thanks,
+Jitendra
+
+
+
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
